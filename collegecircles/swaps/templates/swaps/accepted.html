@@ -1,0 +1,97 @@
+{% extends 'userena/base_userena.html' %}
+
+{% load i18n %}
+{% load pagination_tags %}
+{% load shorttimesince_tag %}
+
+{% block head_title %}{% blocktrans %}Your accepted Swaps{% endblocktrans %}{% endblock %}
+
+
+{% block content_title %}<h2 class="content-title">Tasks</h2>{% endblock %}
+
+
+{% block content %}
+
+<ul id="profile-nav">
+    <li>
+        <a href="{% url offer_list_all %} ">{% trans "All Tasks" %}</a>
+    </li>
+
+    <li>
+        <a href="{% url offer_new %}">{% trans "Post Task" %}</a>
+    </li>
+    <li>
+        <a href="{% url offer_list_yours %}">{% trans "Posted Tasks" %}</a>
+    </li>
+
+    <li class="selected">
+        <a href="{% url accepted_offers %}">{% trans "Accepted Tasks" %}</a>
+    </li>
+
+
+</ul>
+    
+    <legend>{% trans "Your accepted Offers" %}</legend>
+
+    <br /><br />
+    
+    {% if offers %}
+
+        
+        <!-- { autopaginate swaps } -->
+
+<!-- 			<table id="box-table-a" class="tasks" >
+				<tr>`
+					<th>Accepted Time</th>
+					<th>Proposing Offer</th>
+					<th>Offered By</th>
+					<th>Responding Offer</th>
+					<th>Offered By</th>
+					<th>State</th>
+				</tr>
+				{% for offer in offers %}
+
+					<tr class="{% cycle odd,even %}">
+						<td><a href="{{ offer.get_absolute_url }}">{{ offer.accepted_time|shorttimesince }}</a></td>
+						<td>{{ offer.short_description }}</td>
+						<td>{{ offer.offering }}</td>
+						<td>{{ offer.}}</td>
+						<td>{{ offer.offerer }}</td>
+						<td>{{ offer. }}</td>
+					</tr>
+				{% endfor %}
+			</table> -->
+
+        <!-- { paginate } -->
+
+
+
+<ul id="messages" class="list-view">
+  {% for offer in offers %}
+  <li>
+
+    <a href="{{ offer.get_absolute_url }}">{{ offer.short_description }}
+    <img src="{{ offer.offerer.profile.get_mugshot_url }}" class="avatar" />
+
+
+    <p>Offering: {{ offer.offering }}</p>
+
+    <p>Task: {{ offer.want }}</p>
+
+        <p style="display: inline;">Circles: {% for circle in offer.circles.all %} 
+                        {{ circle }}; 
+                    {% endfor %}</p>
+
+    <span class="float-right">{{ offer.offerer }}</span>
+
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+
+    {% else %}
+        No accepted tasks yet.
+    {% endif %}
+    
+{% endblock %}

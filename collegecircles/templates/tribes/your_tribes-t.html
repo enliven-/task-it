@@ -1,0 +1,54 @@
+{% extends 'userena/base_userena.html' %}
+{% load i18n %}
+
+{% load uni_form_tags %}
+<!-- { load humanize } -->
+{% load pagination_tags %}
+{% load order_by %}
+<!-- { load extra_tagging_tags } -->
+{% load tribes_tags %}
+
+{% block title %}{{ profile.user.username }}'s {% trans "profile" %}.{% endblock %}
+
+
+
+
+{% block content_title %}<h2 class="content-title">Circles</h2>{% endblock %}
+
+{% block content %}
+
+
+    <ul id="profile-nav">
+        <li class="selected"><a href="{% url your_tribes %}">{% trans "Your Circles" %}</a></li>
+        <li><a href="{% url tribe_create %}">{% trans "Create Circle" %}</a></li>
+        <li><a href="{% url tribe_list %}">{% trans "All Circless" %}</a></li>
+        <!-- <li><a href="{% url userena_email_change user.username %}">{% trans "Change email" %}</a></li> -->
+    </ul>
+
+<!-- 
+    <form method="GET" action="">
+        <input type="text" name="search" value="{{ search_terms }}" />
+        <input type="submit" value="Search" />
+        {% if search_terms %}
+            <a href="{% clear_search_url request %}">Clear Search Terms</a>
+        {% endif %}
+    </form> -->
+
+    <legend>Your Circles</legend>
+
+    <br /><br />
+
+
+    {% if tribes %}
+        <ul>
+        {% for tribe in tribes %}
+        <!-- change here from %show_tribe% tribe to just tribe -->
+            <li><a href="/tribes/tribe/{{ tribe.slug }}">{{ tribe }}</a></li><br />
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+
+    
+
+{% endblock %}

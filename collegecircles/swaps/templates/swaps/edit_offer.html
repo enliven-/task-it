@@ -1,0 +1,50 @@
+{% extends 'userena/base_userena.html' %}
+
+{% load i18n %}
+{% load tagging_tags %}
+
+{% block content_title %}<h2 class="content-title">Tasks</h2>{% endblock %}
+
+{% block content %}
+
+<ul id="profile-nav">
+    <li>
+        <a href="{% url offer_list_all %} ">{% trans "All Tasks" %}</a>
+    </li>
+
+    <li class="selected">
+        <a href="{% url offer_new %}">{% trans "Post Task" %}</a>
+    </li>
+    <li>
+        <a href="{% url offer_list_yours %}">{% trans "Posted Tasks" %}</a>
+    </li>
+
+    <li>
+        <a href="{% url accepted_offers %}">{% trans "Accepted Tasks" %}</a>
+    </li>
+
+
+</ul>
+    
+    <legend>{% trans "Editing Offer" %}</legend>
+    
+    {% ifequal offer.offerer user %}
+        <div>
+            <form id="offer_form" method="POST" action="">{% csrf_token %}
+<!--                 <table>
+                    {{ offer_form }}
+                    <tr><td></td><td><input type="hidden" name="action" value="update" /><input type="submit" value="{% trans "update" %}"/></td></tr>
+                </table> -->
+
+                <fieldset>
+                <!-- <legend>{% trans "Post a Task" %}</legend> -->
+                {{ offer_form.as_p }}
+                </fieldset>
+                <input type="hidden" name="action" value="update" />
+                <input type="submit" value="{% trans "update" %}"/>
+            </form>
+        </div>
+    {% else %}
+        <p>You are not the creator of this offer.</p>
+    {% endifequal %}
+{% endblock %}

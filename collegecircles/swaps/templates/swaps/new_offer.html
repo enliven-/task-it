@@ -1,0 +1,56 @@
+{% extends 'userena/base_userena.html' %}
+
+{% load i18n %}
+
+{% block head_title %}{% blocktrans %}Add a new Offer{% endblocktrans %}{% endblock %}
+
+{% block content_title %}<h2 class="content-title">Tasks</h2>{% endblock %}
+
+
+{% block content %}
+
+
+
+<ul id="profile-nav">
+    <li>
+        <a href="{% url offer_list_all %} ">{% trans "All Tasks" %}</a>
+    </li>
+
+    <li class="selected">
+        <a href="{% url offer_new %}">{% trans "Post Task" %}</a>
+    </li>
+    <li>
+        <a href="{% url offer_list_yours %}">{% trans "Posted Tasks" %}</a>
+    </li>
+
+    <li>
+        <a href="{% url accepted_offers %}">{% trans "Accepted Tasks" %}</a>
+    </li>
+
+
+</ul>
+
+
+    
+    <legend>{% trans "Post a new task" %}</legend>
+    
+    <form id="offer_form" method="POST" action="">
+       {% csrf_token %}
+
+        <!-- <table> -->
+<!--             {% csrf_token %}
+            {{ offer_form.as_p }}
+            <input type="hidden" name="action" value="create" /><input type="submit" value="create"/> -->
+        <!-- </table> -->
+    
+        <fieldset>
+        <!-- <legend>{% trans "Post a Task" %}</legend> -->
+        {{ offer_form.as_p }}
+        </fieldset>
+        <input type="hidden" name="action" value="create" />
+        <input type="submit" value="create"/>
+    </form>
+
+
+
+{% endblock %}

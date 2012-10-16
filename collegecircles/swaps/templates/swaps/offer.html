@@ -1,0 +1,169 @@
+{% extends 'userena/base_userena.html' %}
+
+{% load i18n %}
+{% load threadedcommentstags %}
+{% load tagging_tags %}
+
+{% block head_title %}{% blocktrans %}Offer{% endblocktrans %} : {{ offer.short_description }}{% endblock %}
+
+
+
+{% block content_title %}<h2 class="content-title">Tasks</h2>{% endblock %}
+
+
+{% block content %}
+
+<ul id="profile-nav">
+    <li>
+        <a href="{% url offer_list_all %} ">{% trans "All Tasks" %}</a>
+    </li>
+
+    <li>
+        <a href="{% url offer_new %}">{% trans "Post Task" %}</a>
+    </li>
+    <li>
+        <a href="{% url offer_list_yours %}">{% trans "Posted Tasks" %}</a>
+    </li>
+
+    <li>
+        <a href="{% url accepted_offers %}">{% trans "Accepted Tasks" %}</a>
+    </li>
+
+
+</ul>
+    
+<!--     <div class="blog-post">
+        <h2>{{ offer.short_description }}</h2>
+        <div class="blog-meta"><p>Offered by: <a href="{% url userena_profile_detail offer.offerer.username %}">{{ offer.offerer.username }}</a> on {{ offer.offered_time|date }}</p></div>
+        <p>
+			Offering: {{ offer.offering|urlize }}
+		</p>
+		<p>
+			Want: {{ offer.want|urlize }}
+		</p>
+		<p>
+			State: {{ offer.get_state_display }}
+		</p>
+		<div class="blog-tags">
+            <p><img src="/site_media/tags.png" border="0" class="noborder" align="absmiddle" />
+            {% tags_for_object offer as tags %}
+            {% for tag in tags %}
+                <a href="/tags/{{ tag }}">{{ tag }}</a>
+            {% endfor %}</p>
+			{% if offer.is_changeable %}
+				{% ifequal offer.offerer request.user %}
+					<form style="display: inline;" action="{% url offer_edit offer.id %}" method="GET">
+						<input type="hidden" name="returnto" value="offer_list_yours" />
+						<input type="submit" value="{% trans "Edit Offer" %}" />
+					</form>
+					{% if offer.is_deletable %}
+						<form style="display: inline;" action="{% url offer_delete offer.id %}" method="POST">
+							<input type="submit" value="{% trans "Delete Offer" %}" />
+						</form>
+					{% else %}
+						{% if offer.is_cancelable %}
+							<form style="display: inline;" action="{% url offer_cancel offer.id %}" method="POST">
+								<input type="submit" value="{% trans "Cancel Offer" %}" />
+							</form>
+						{% endif %}
+					{% endif %}
+				{% endifequal %}
+			{% endif %}
+        </div>
+
+    </div>
+
+          <td>
+            {% ifnotequal user offer.offerer %}
+              <form action="{% url accept_offer offer.id %}" method="GET">
+                <input type="submit" value="{% trans "Accept Offer" %}" />
+              </form>
+            {% endifnotequal %}
+          </td> -->
+
+
+<legend> Offer </legend>
+
+<ul id="messages">
+
+<li class="received">
+<img src="{{ offer.offerer.profile.get_mugshot_url }}" class="avatar received" />
+  <div class="message-content">
+        <h2>{{ offer.short_description }}</h2>
+        <div class="blog-meta"><p>Offered by: <a style="display:inline;" href="{% url userena_profile_detail offer.offerer.username %}">{{ offer.offerer.username }}</a> on {{ offer.offered_time|date }}</p></div>
+        <p>
+            Offering: {{ offer.offering|urlize }}
+        </p>
+        <p>
+            Want: {{ offer.want|urlize }}
+        </p>
+<!--         <p>
+            State: {{ offer.get_state_display }}
+        </p> -->
+
+        <p>
+            Current Acceptors({{ offer.acceptors.count }}): {% for acceptor in offer.acceptors.all  %} {{ acceptor }},
+            {% endfor %}
+        </p>
+
+        <p> Circles: {% for circle in offer.circles.all %} 
+                        <a style="display:inline;"href="/tribes/tribe/{{ circle.slug }}">{{ circle }}</a>&nbsp;&nbsp;
+                    {% endfor %}
+
+        <div class="blog-tags">
+            <p>
+                <!-- <img src="/site_media/tags.png" border="0" class="noborder" align="absmiddle" /> -->
+                Tags: 
+            <!-- {% tags_for_object offer as tags %} -->
+<!--             {% for tag in offer.tags %}
+                <a style="display:inline;" href="/tags/{{ tag }}">{{ tag }};</a>
+            {% endfor %}</p> -->
+            {% if offer.is_changeable %}
+                {% ifequal offer.offerer request.user %}
+                    <form style="display: inline;" action="{% url offer_edit offer.id %}" method="GET">
+                        <input type="hidden" name="returnto" value="offer_list_yours" />
+                        <input type="submit" value="{% trans "Edit Offer" %}" />
+                    </form>
+                    {% if offer.is_deletable %}
+                        <form style="display: inline;" action="{% url offer_delete offer.id %}" method="POST">
+                            <input type="submit" value="{% trans "Delete Offer" %}" />
+                        </form>
+                    {% else %}
+                        {% if offer.is_cancelable %}
+                            <form style="display: inline;" action="{% url offer_cancel offer.id %}" method="POST">
+                                <input type="submit" value="{% trans "Cancel Offer" %}" />
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                {% endifequal %}
+            {% endif %}
+        </div>
+
+        {% ifequal offer.offerer request.user %}
+
+        {% endifequal %}
+
+
+  </div>
+
+  {% if user in offer.acceptors.all %}
+    <span class="button" id="accept"><h3>Accepted</h3></span>
+  {% else %}
+
+    {% ifnotequal user offer.offerer %}
+    <a href="{% url accept_offer offer.id %}" class="button" id="accept"><span>{% trans "Accept Offer" %}</span></a>
+    {% else %}
+
+    <!-- <input type="hidden" name="returnto" value="offer_list_yours" /> -->
+
+    <a href="{% url offer_edit offer.id %}" class="button" id="accept"><span> {% trans "Edit Offer" %}</span></a>
+    <!-- {% url offer_delete offer.id %}{% trans "Delete Offer" %} -->
+
+    {% endifnotequal %}
+
+{% endif %}
+  
+</li>
+
+
+{% endblock %}
